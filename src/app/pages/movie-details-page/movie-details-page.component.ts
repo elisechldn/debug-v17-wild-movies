@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Movie } from '../../models/movie.model';
+import { MovieService } from '../../services/movie.service';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 
 @Component({
   selector: 'app-movie-details-page',
@@ -10,11 +12,14 @@ import { Movie } from '../../models/movie.model';
 })
 export class MovieDetailsPageComponent {
   movie!: Movie;
+  private movieService= inject(MovieService);
+  route: ActivatedRoute = inject(ActivatedRoute);
+  
 
   constructor() {
     this.route.paramMap.subscribe((params: ParamMap) => {
       const movieId = Number(params.get('id'));
-      this.movieService.getMovieDetails(movieId).subscribe((data) => {
+      this.movieService.getMovieDetails(movieId).subscribe((data: any) => {
         this.movie = data;
       });
     });
